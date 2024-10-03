@@ -41,12 +41,12 @@ public class BookServiceImpl implements BookService {
     @Override
     @Cacheable(value = "booksByGenre", key = "#genre", unless = "#result == null or #result.empty")
     public List<Book> getBooksByGenre(String genre) {
-        return bookRepository.findByGenre(genre);
+        return bookRepository.findByGenre(genre.toUpperCase());
     }
 
     @Override
     @Cacheable(value = "booksByAuthor", key = "#author", unless = "#result == null or #result.empty")
     public List<Book> getBooksByAuthor(String author) {
-        return bookRepository.findByAuthor(author);
+        return bookRepository.findByAuthor(author.toUpperCase());
     }
 }

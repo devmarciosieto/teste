@@ -14,9 +14,9 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    @Query(value = "select b.genre from Book b where b.genre = :genre")
+    @Query(value = "select b from Book b where b.genre = :genre")
     List<Book> findByGenre(@Param("genre") String genre);
 
-    @Query(value = "select b.author from Book b where b.author = :author")
+    @Query(value = "select b from Book b where b.author = :author")
     List<Book> findByAuthor(@Param("author") String author);
 }

@@ -2,14 +2,14 @@ services:
   postgres:
     image: 'postgres:latest'
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_DB=catalogodosabio'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_USER=postgres'
     ports:
       - '5432'
 
   redis:
     image: 'redis:latest'
-    container_name: redis-cache2
+    container_name: redis-cache
     ports:
       - '6379'
