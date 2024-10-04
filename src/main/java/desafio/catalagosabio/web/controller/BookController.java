@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import static desafio.catalagosabio.domain.exception.ExceptionEnum.PARAMETER_NULL;
+import static desafio.catalagosabio.domain.exception.ExceptionEnum.*;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -42,7 +42,7 @@ public class BookController {
     @GetMapping("/genre")
     public ResponseEntity<List<Book>> getBooksByGenre(@RequestParam String genre) {
         if (genre == null || genre.isBlank()) {
-            ResponseEntity.badRequest().body(new BusinessException(PARAMETER_NULL.getMessage(), PARAMETER_NULL.getStatusCode()));
+            throw new BusinessException(GENRE_PARAMETER_NULL.getMessage(), GENRE_PARAMETER_NULL.getStatusCode());
         }
         List<Book> books = bookService.getBooksByGenre(genre);
         return books.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(books);
@@ -51,7 +51,7 @@ public class BookController {
     @GetMapping("/author")
     public ResponseEntity<List<Book>> getBooksByAuthor(@RequestParam String author) {
         if (author == null || author.isBlank()) {
-            throw new BusinessException(PARAMETER_NULL.getMessage(), PARAMETER_NULL.getStatusCode());
+            throw new BusinessException(AUTHOR_PARAMETER_NULL.getMessage(), AUTHOR_PARAMETER_NULL.getStatusCode());
         }
         List<Book> books = bookService.getBooksByAuthor(author);
         return books.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(books);

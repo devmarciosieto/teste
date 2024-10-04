@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @Getter
 public enum ExceptionEnum {
-    PARAMETER_NULL("", Response.Status.BAD_REQUEST.getStatusCode());
+    AUTHOR_PARAMETER_NULL("Author parameter is mandatory", Response.Status.BAD_REQUEST.getStatusCode()),
+    GENRE_PARAMETER_NULL("Genre parameter is mandatory", Response.Status.BAD_REQUEST.getStatusCode());
 
     final String message;
     final Integer statusCode;
