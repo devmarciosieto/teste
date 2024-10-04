@@ -1,6 +1,7 @@
 package desafio.catalagosabio.web.controller;
 
 import desafio.catalagosabio.application.service.BookService;
+import desafio.catalagosabio.domain.exception.BusinessException;
 import desafio.catalagosabio.infra.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static desafio.catalagosabio.domain.exception.ExceptionEnum.PARAMETER_NULL;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -38,12 +41,18 @@ public class BookController {
 
     @GetMapping("/genre")
     public ResponseEntity<List<Book>> getBooksByGenre(@RequestParam String genre) {
+        if (genre == null || genre.isBlank()) {
+            ResponseEntity.badRequest().body(new BusinessException(PARAMETER_NULL.getMessage()));
+        }
         List<Book> books = bookService.getBooksByGenre(genre);
         return books.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(books);
     }
 
     @GetMapping("/author")
     public ResponseEntity<List<Book>> getBooksByAuthor(@RequestParam String author) {
+        if (author == null || author.isBlank()) {
+            throw new BusinessException(PARAMETER_NULL.getMessage());
+        }
         List<Book> books = bookService.getBooksByAuthor(author);
         return books.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(books);
     }
