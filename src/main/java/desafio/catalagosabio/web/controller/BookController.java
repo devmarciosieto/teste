@@ -35,8 +35,9 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
         Optional<Book> book = bookService.getBookById(id);
+
         return book.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new BusinessException(ID_NOT_FOUND.getMessage(), ID_NOT_FOUND.getStatusCode()));
     }
 
     @GetMapping("/genre")
@@ -45,7 +46,7 @@ public class BookController {
             throw new BusinessException(GENRE_PARAMETER_NULL.getMessage(), GENRE_PARAMETER_NULL.getStatusCode());
         }
         List<Book> books = bookService.getBooksByGenre(genre);
-        return books.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(books);
+        return ResponseEntity.ok(books);
     }
 
     @GetMapping("/author")
@@ -54,7 +55,7 @@ public class BookController {
             throw new BusinessException(AUTHOR_PARAMETER_NULL.getMessage(), AUTHOR_PARAMETER_NULL.getStatusCode());
         }
         List<Book> books = bookService.getBooksByAuthor(author);
-        return books.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(books);
+        return ResponseEntity.ok(books);
     }
 }
 
