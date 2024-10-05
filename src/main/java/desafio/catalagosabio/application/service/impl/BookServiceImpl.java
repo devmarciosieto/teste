@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "books", key = "'allBooks'", unless = "#result == null or #result.empty")
+    @Cacheable(value = "books", keyGenerator = "keyGenerator", unless = "#result == null or #result.empty")
     public Page<Book> findAllBooks(int page, int size) {
         return bookRepository.findAll(PageRequest.of(page, size));
     }
