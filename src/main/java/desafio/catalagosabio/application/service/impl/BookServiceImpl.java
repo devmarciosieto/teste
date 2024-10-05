@@ -1,6 +1,7 @@
 package desafio.catalagosabio.application.service.impl;
 
 
+import desafio.catalagosabio.application.dto.BookDto;
 import desafio.catalagosabio.application.service.BookService;
 import desafio.catalagosabio.domain.exception.BusinessException;
 import desafio.catalagosabio.infra.model.Book;
@@ -9,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +35,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "books", keyGenerator = "keyGenerator", unless = "#result == null or #result.empty")
+//    @Cacheable(value = "books", keyGenerator = "keyGenerator", unless = "#result == null or #result.empty")
     public Page<Book> findAllBooks(int page, int size) {
         return bookRepository.findAll(PageRequest.of(page, size));
     }
@@ -63,5 +66,15 @@ public class BookServiceImpl implements BookService {
         if (books.isEmpty()) {
             throw new BusinessException(NOT_FOUND.getMessage(), NOT_FOUND.getStatusCode());
         }
+    }
+
+    //Metodo para transformar a lista paginada após o mapper
+    private Page<BookDto> getPaginatedBooks(List<BookDto> books, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), books.size());
+        List<BookDto> paginatedBooks = books.subList(start, end);
+
+        return new PageImpl<>(paginatedBooks, pageable, books.size());
     }
 }
