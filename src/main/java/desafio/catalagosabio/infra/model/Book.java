@@ -1,10 +1,10 @@
 package desafio.catalagosabio.infra.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -15,8 +15,9 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @Builder
-public class Book {
+public class Book  implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

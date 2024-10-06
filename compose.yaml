@@ -6,10 +6,10 @@ services:
       - 'POSTGRES_PASSWORD=postgres'
       - 'POSTGRES_USER=postgres'
     ports:
-      - '5432'
+      - '5433:5432'
 
   redis:
     image: 'redis:latest'
     container_name: redis-cache
     ports:
-      - '6379'
+      - '6379:6379'
