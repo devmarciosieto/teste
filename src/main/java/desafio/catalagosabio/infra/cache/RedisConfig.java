@@ -25,7 +25,7 @@ public class RedisConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(1));
+                .entryTtl(Duration.ofSeconds(10));
 
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
         cacheConfigurations.put("books", cacheConfig);
@@ -35,6 +35,7 @@ public class RedisConfig {
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(cacheConfig)
+                .withInitialCacheConfigurations(cacheConfigurations)
                 .build();
     }
 
