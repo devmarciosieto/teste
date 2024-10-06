@@ -1,6 +1,7 @@
 package desafio.catalagosabio.application.service;
 
 
+import desafio.catalagosabio.application.dto.BookDto;
 import desafio.catalagosabio.infra.model.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +13,7 @@ import java.util.Optional;
 @Service
 public interface BookService {
 
-    Page<Book> findAllBooks(int page, int size);
-
-    Page<Book> findAllBooks(Pageable pageable);
+    Page<BookDto> findAllBooks(Pageable pageable);
 
     Optional<Book> getBookById(Long id);
 
