@@ -41,6 +41,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "books", keyGenerator = "keyGenerator", unless = "#result == null or #result.empty")
+    public Page<Book> findAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable);
+    }
+
+    @Override
     @Cacheable(value = "bookById", key = "#id", unless = "#result == null")
     public Optional<Book> getBookById(Long id) {
         return bookRepository.findById(id);

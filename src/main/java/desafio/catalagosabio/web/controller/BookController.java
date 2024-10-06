@@ -1,10 +1,16 @@
 package desafio.catalagosabio.web.controller;
 
+import desafio.catalagosabio.application.dto.BookDto;
 import desafio.catalagosabio.application.service.BookService;
 import desafio.catalagosabio.domain.exception.BusinessException;
+import desafio.catalagosabio.domain.mapper.BookMapper;
 import desafio.catalagosabio.infra.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,16 +26,38 @@ public class BookController {
     private final BookService bookService;
 
     @Autowired
+    BookMapper bookMapper;
+
+    @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 
-    @GetMapping
-    public ResponseEntity<Page<Book>> getAllBooks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+//    @GetMapping
+//    public ResponseEntity<Page<Book>> getAllBooks(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//
+//        return ResponseEntity.ok(bookService.findAllBooks(page, size));
+//    }
 
-        return ResponseEntity.ok(bookService.findAllBooks(page, size));
+//    @GetMapping
+//    public ResponseEntity<Page<Book>> getAllBooks(Pageable pageable) {
+//        return ResponseEntity.ok(bookService.findAllBooks(pageable));
+//    }
+
+//    @GetMapping
+//    public ResponseEntity<Page<Book>> getAllBooks(@PageableDefault(page = 0, size = 10,
+//            sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+//        return ResponseEntity.ok(bookService.findAllBooks(pageable));
+//    }
+
+    @GetMapping
+    public ResponseEntity<Page<BookDto>> getAllBooks(@PageableDefault(page = 0, size = 10,
+            sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Book> books = bookService.findAllBooks(pageable);
+        List<BookDto> bookDtoList = bookMapper.toDto(books.stream().toList());
+        return ResponseEntity.ok(new PageImpl(bookDtoList, pageable, books.getTotalElements()));
     }
 
     @GetMapping("/{id}")
