@@ -15,4 +15,11 @@ public class BusinessExceptionHandler {
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(businessException.getMessage(), businessException.code);
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleNotFoundException(NotFoundException notFoundException) {
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(notFoundException.getMessage(), notFoundException.code);
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
+    }
+
 }

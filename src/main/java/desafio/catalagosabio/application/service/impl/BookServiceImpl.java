@@ -3,7 +3,7 @@ package desafio.catalagosabio.application.service.impl;
 
 import desafio.catalagosabio.application.dto.BookDto;
 import desafio.catalagosabio.application.service.BookService;
-import desafio.catalagosabio.domain.exception.BusinessException;
+import desafio.catalagosabio.domain.exception.NotFoundException;
 import desafio.catalagosabio.infra.model.Book;
 import desafio.catalagosabio.infra.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     @Cacheable(value = "books", keyGenerator = "keyGenerator", unless = "#result == null or #result.empty")
     public Page<Book> findAllBooks(int page, int size) {
         return bookRepository.findAll(PageRequest.of(page, size));
@@ -71,7 +71,7 @@ public class BookServiceImpl implements BookService {
 
     private void verifyListNotEmpty(List<Book> books) {
         if (books.isEmpty()) {
-            throw new BusinessException(NOT_FOUND.getMessage(), NOT_FOUND.getStatusCode());
+            throw new NotFoundException(NOT_FOUND.getMessage(), NOT_FOUND.getStatusCode());
         }
     }
 
