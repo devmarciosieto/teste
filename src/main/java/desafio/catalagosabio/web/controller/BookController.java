@@ -33,13 +33,13 @@ public class BookController {
         this.bookService = bookService;
     }
 
-//    @GetMapping
-//    public ResponseEntity<Page<Book>> getAllBooks(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size) {
-//
-//        return ResponseEntity.ok(bookService.findAllBooks(page, size));
-//    }
+    @GetMapping
+    public ResponseEntity<Page<Book>> getAllBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        return ResponseEntity.ok(bookService.findAllBooks(page, size));
+    }
 
 //    @GetMapping
 //    public ResponseEntity<Page<Book>> getAllBooks(Pageable pageable) {
@@ -52,13 +52,13 @@ public class BookController {
 //        return ResponseEntity.ok(bookService.findAllBooks(pageable));
 //    }
 
-    @GetMapping
-    public ResponseEntity<Page<BookDto>> getAllBooks(@PageableDefault(page = 0, size = 10,
-            sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Book> books = bookService.findAllBooks(pageable);
-        List<BookDto> bookDtoList = bookMapper.toDto(books.stream().toList());
-        return ResponseEntity.ok(new PageImpl(bookDtoList, pageable, books.getTotalElements()));
-    }
+//    @GetMapping
+//    public ResponseEntity<Page<BookDto>> getAllBooks(@PageableDefault(page = 0, size = 10,
+//            sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+//        Page<Book> books = bookService.findAllBooks(pageable);
+//        List<BookDto> bookDtoList = bookMapper.toDto(books.stream().toList());
+//        return ResponseEntity.ok(new PageImpl(bookDtoList, pageable, books.getTotalElements()));
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
